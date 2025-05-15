@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Payment with QR Scanner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #004aad;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            background: #00337C;
+            padding: 10px;
+            list-style: none;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .container {
+            display: flex;
+            margin: 20px;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: #004aad;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+            position: fixed;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .sidebar ul li:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: white;
+            display: block;
+            padding: 10px 0;
+        }
+
+        .sidebar a:hover {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+
+        main {
+            margin-left: 270px;
+            padding: 20px;
+            flex: 1;
+        }
+
+        .billing-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            max-width: 700px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .billing-section h2 {
+            margin-bottom: 20px;
+            color: #004aad;
+        }
+
+        .billing-section form input,
+        .billing-section form select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        .billing-section form input:focus,
+        .billing-section form select:focus {
+            border-color: #004aad;
+            box-shadow: 0 0 10px rgba(0, 74, 173, 0.3);
+        }
+
+        .billing-section button {
+            width: 100%;
+            background: #004aad;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            letter-spacing: 1px;
+            transition: background 0.3s;
+            margin-top: 15px;
+        }
+
+        .billing-section button:hover {
+            background: #ffcc00;
+            color: #333;
+        }
+
+        .notification {
+            background: #f1c40f;
+            color: #2c3e50;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .qr-section {
+            margin-top: 20px;
+        }
+
+        .qr-section img {
+            width: 200px;
+            height: 200px;
+            border: 5px solid #eee;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .qr-section p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <video autoplay muted loop id="bg-video">
+        <source src="D:\electric\main video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <header>
+        <div class="header-left">
+            <img src="D:\electric\logo.png" class="logo" alt="Logo">
+            <h1>Electricity Billing System</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <ul>
+                <li><a href="D:\electric\view bill.html">View Bill</a></li>
+                <li><a href="D:\electric\house billing calculator.html">Bill Generation</a></li>
+                <li><a href="D:\electric\Disbursement Progress.html">Disbursement Progress</a></li>
+                <li><a href="D:\electric\complaints\contact us.html">Complaints</a></li>
+                <li><a href="D:\electric\complaints\Performance Page.html">Performance</a></li>
+                <li><a href="D:\electric\complaints\support Page.html">Support</a></li>
+                <li><a href="D:\electric\home page .html">Home Page</a></li>
+            </ul>
+        </aside>
+
+        <main>
+            <div class="billing-section">
+                <div class="notification">
+                    ⚠️ Please review your details before proceeding with payment.
+                </div>
+                <h2>Bill Payment</h2>
+                <form action="payment-success.html" method="post">
+                    <input type="text" name="consumer_number" placeholder="Consumer Number" required>
+                    <input type="text" name="bill_number" placeholder="Bill Number" required>
+                    <input type="text" name="amount" placeholder="Amount (₹)" required>
+                    <select name="payment_method" required>
+                        <option value="">Select Payment Method</option>
+                        <option value="credit_card">Credit Card</option>
+                        <option value="debit_card">Debit Card</option>
+                        <option value="net_banking">Net Banking</option>
+                        <option value="upi">UPI</option>
+                    </select>
+                    <input type="text" name="transaction_id" placeholder="Transaction ID (if applicable)">
+                    <button type="submit">Pay Now</button>
+                </form>
+
+                <div class="qr-section">
+                    <h3>OR Scan & Pay</h3>
+                    <img src="qr-code.png" alt="Scan QR Code">
+                    <p>Scan the above QR code using any UPI app to pay directly.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        window.onload = function() {
+            alert("🔔 Welcome to the Bill Payment Page. Scan QR code or fill payment form.");
+        };
+    </script>
+
+</body>
+</html>

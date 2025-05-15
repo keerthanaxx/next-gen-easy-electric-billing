@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #34495e;
+        }
+        .performance-metric {
+            background: #ecf0f1;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .performance-metric h3 {
+            margin: 0 0 10px;
+            color: #2980b9;
+        }
+        .progress-bar {
+            height: 20px;
+            background: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar div {
+            height: 100%;
+            background: #3498db;
+            width: 75%; /* adjust percentage dynamically */
+        }
+        .note {
+            font-size: 14px;
+            color: #7f8c8d;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Electricity Usage Performance</h1>
+        <div class="performance-metric">
+            <h3>Monthly Usage (kWh)</h3>
+            <div class="progress-bar"><div style="width: 60%;"></div></div>
+            <p>Used: 300 kWh of 500 kWh allowed</p>
+        </div>
+        <div class="performance-metric">
+            <h3>Bill Payment Progress</h3>
+            <div class="progress-bar"><div style="width: 90%; background: #27ae60;"></div></div>
+            <p>90% of the bill paid this month</p>
+        </div>
+        <div class="performance-metric">
+            <h3>Energy Saving Goal</h3>
+            <div class="progress-bar"><div style="width: 40%; background: #f39c12;"></div></div>
+            <p>40% towards your saving target</p>
+        </div>
+        <div class="note">
+            📊 Track your performance every month to reduce costs and save energy!
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #b8bafb, #f2bbb6);
+            color: #fff;
+            text-align: center;
+        }
+        .about-container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .about-header {
+            font-size: 42px;
+            font-weight: bold;
+            color: #090226;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+        .about-content {
+            font-size: 20px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+            color: #020202;
+        }
+        .team-section {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .team-member {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 250px;
+            transition: transform 0.3s ease;
+        }
+        .team-member:hover {
+            transform: scale(1.1);
+        }
+        .team-member img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+            border: 3px solid #a3defb;
+        }
+        .team-member h3 {
+            margin-bottom: 5px;
+            color: #f4b8f5;
+        }
+        .team-member p {
+            font-size: 16px;
+            color: #f69090;
+        }
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="bg-video">
+        <source src="D:\electric\main video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="about-container">
+        <h1 class="about-header">About Us</h1>
+        <p class="about-content">Welcome to our Electric Billing System! We are dedicated to providing a seamless and efficient way to manage your electricity consumption, pay bills, and track usage with ease. Our mission is to simplify billing for users while ensuring accuracy and reliability.</p>
+        
+        <p class="about-content">Our platform is designed to eliminate the hassle of traditional electricity billing. By integrating modern technology, we ensure that users can monitor their consumption in real-time, receive timely notifications, and make secure online payments. Our goal is to enhance user experience by making billing more transparent and accessible.</p>
+        
+        <p class="about-content">With a strong commitment to innovation, we continuously improve our services by incorporating customer feedback and leveraging the latest advancements in billing technology. Whether you're a residential user or a business, our system is built to cater to your specific needs, ensuring efficiency and convenience at every step.</p>
+        
+        <p class="about-content">Our Electric Billing System is a next-generation platform built to simplify and streamline electricity billing and consumption tracking. Designed for both residential users and businesses, our system eliminates the hassle of manual calculations, paper bills, and long queues for payments. With advanced real-time tracking, users can monitor their electricity usage, receive instant bill updates, and make secure online transactions—all in one place. The platform features intelligent analytics, allowing users to identify patterns in their power consumption and optimize energy usage for cost savings. Additionally, automated notifications and reminders ensure that no payment is ever missed, while our secure database safeguards user data with the latest encryption technologies. Our commitment to user convenience and innovation drives us to continuously enhance the system, incorporating AI-driven insights and seamless integrations with smart meters. Whether you are an individual looking for an effortless billing solution or a company needing large-scale energy management, our Electric Billing System is built to meet your needs with efficiency, transparency, and reliability.</p>
+        </div>
+    </div>
+</body>
+</html>

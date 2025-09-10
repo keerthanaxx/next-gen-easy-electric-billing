@@ -1,9 +1,9 @@
  Next-Gen Electricity Billing
 
- https://github.com/user-attachments/assets/1fe9387b-704b-4970-92a1-2f92a1825b5c
 
- 
- This is a static website project for a next-generation electricity billing system, **VoltCharge**. The platform aims to simplify billing and consumption tracking for both residential and business users by providing a user-friendly interface for bill viewing, consumption calculation, and support requests.
+https://github.com/user-attachments/assets/d7bb93a8-05a3-4df8-8784-28763d6a44a3
+
+This is a static website project for a next-generation electricity billing system, **VoltCharge**. The platform aims to simplify billing and consumption tracking for both residential and business users by providing a user-friendly interface for bill viewing, consumption calculation, and support requests.
 
 🚀 Features
 

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Page</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #8a9df6, #ACB6E5);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .support-option {
+            background: #f7f7f7;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 6px solid #3498db;
+            border-radius: 8px;
+        }
+        .support-option h3 {
+            margin: 0;
+            color: #3498db;
+        }
+         #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+<body>
+       <video autoplay muted loop id="bg-video">
+        <source src="main video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="container">
+        <h1>Need Help? We're Here for You!</h1>
+        <div class="support-option">
+            <h3>Email Support</h3>
+            <p>Reach out to us at <strong>support@example.com</strong> and we’ll respond within 24 hours.</p>
+        </div>
+        <div class="support-option">
+            <h3>Phone Support</h3>
+            <p>Call us at <strong>+91 98765 43210</strong> between 9AM - 6PM, Monday to Saturday.</p>
+        </div>
+        <div class="support-option">
+            <h3>Live Chat</h3>
+            <p>Click the chat icon at the bottom-right to talk to our support team instantly.</p>
+        </div>
+        <div class="support-option">
+            <h3>Help Center</h3>
+            <p>Visit our <a href="FAQ.html">FAQ page</a> for answers to common questions.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoltCharge - Electricity Bill Calculator</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Custom CSS for a beautiful gradient background and font */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1f2937, #4b5563);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #f3f4f6;
+            padding: 1.5rem;
+        }
+
+        /* Responsive container for the calculator */
+        .calculator-container {
+            width: 100%;
+            max-width: 28rem;
+            background: rgba(31, 41, 55, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .calculator-container:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(-5px);
+        }
+
+        /* Basic styling for the form elements */
+        .input-group label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.125rem;
+            color: #d1d5db;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: #4b5563;
+            color: #f3f4f6;
+            border: 2px solid #6b7280;
+            border-radius: 0.75rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Styling for the result section */
+        .bill-breakdown {
+            margin-top: 1.5rem;
+            background: rgba(31, 41, 55, 0.9);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bill-breakdown h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #a5b4fc;
+        }
+
+        .bill-breakdown ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .bill-breakdown li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+        }
+
+        .bill-breakdown li:last-child {
+            border-bottom: none;
+        }
+
+        .total-result {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #3b82f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #81c784;
+        }
+
+        .total-result h4 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .total-result span {
+            color: #c5f0c5;
+        }
+
+        .error-message {
+            color: #ef4444;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 1rem;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+         #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 flex flex-col items-center justify-center p-6 min-h-screen">
+    <div class="calculator-container text-gray-100">
+        <h2 class="text-3xl font-bold text-center mb-2 calc-title text-blue-300">Electricity Bill Calculator</h2>
+        <p class="text-center text-gray-300 mb-8 calc-subtitle">Calculate your monthly bill based on Telangana LT1A tariff.</p>
+        <div class="input-group mb-6">
+            <label for="units">Enter Units Consumed:</label>
+            <input type="number" id="units" placeholder="e.g., 250" min="0" required class="bg-gray-700 text-gray-100 placeholder-gray-400">
+        </div>
+        <button onclick="calculateBill()" class="btn btn-primary mb-4">Calculate Bill</button>
+        
+        <div id="result" class="bill-breakdown hidden">
+            <!-- Bill breakdown will be inserted here -->
+        </div>
+    </div>
+  <video autoplay muted loop id="bg-video">
+        <source src="main video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <script>
+        function calculateBill() {
+            const unitsInput = document.getElementById('units');
+            const resultDiv = document.getElementById('result');
+            const units = parseFloat(unitsInput.value);
+
+            if (isNaN(units) || units < 0) {
+                resultDiv.classList.remove('hidden');
+                resultDiv.innerHTML = `<p class="error-message">Please enter a valid number of units.</p>`;
+                return;
+            }
+
+            // Telangana LT1A tariff calculation
+            let energyCharge = 0;
+            if (units <= 50) {
+                energyCharge = units * 1.95;
+            } else if (units <= 100) {
+                energyCharge = (50 * 1.95) + ((units - 50) * 3.10);
+            } else if (units <= 200) {
+                energyCharge = (50 * 1.95) + (50 * 3.10) + ((units - 100) * 4.40);
+            } else {
+                energyCharge = (50 * 1.95) + (50 * 3.10) + (100 * 4.40) + ((units - 200) * 5.90);
+            }
+
+            // Fixed charges
+            const fixedCharge = 10;
+            const custCharge = 50;
+            const ed = 8.40;
+            const surcharge = 0.10;
+            const trueupCharge = 14;
+            const fppcaCharge = 18;
+            const fppca2Charge = 14;
+            const lossGain = -0.40;
+
+            const total = energyCharge + fixedCharge + custCharge + ed + surcharge + trueupCharge + fppcaCharge + fppca2Charge + lossGain;
+
+            resultDiv.innerHTML = `
+                <h3 class="text-blue-300">Bill Breakdown for ${units.toFixed(2)} units:</h3>
+                <ul>
+                    <li><strong>Energy Charge:</strong> <span>₹${energyCharge.toFixed(2)}</span></li>
+                    <li><strong>Fixed Charge:</strong> <span>₹${fixedCharge.toFixed(2)}</span></li>
+                    <li><strong>Customer Charge:</strong> <span>₹${custCharge.toFixed(2)}</span></li>
+                    <li><strong>ED:</strong> <span>₹${ed.toFixed(2)}</span></li>
+                    <li><strong>Surcharge:</strong> <span>₹${surcharge.toFixed(2)}</span></li>
+                    <li><strong>True-up Charge:</strong> <span>₹${trueupCharge.toFixed(2)}</span></li>
+                    <li><strong>FPPCA Charge:</strong> <span>₹${fppcaCharge.toFixed(2)}</span></li>
+                    <li><strong>FPPCA2 Charge:</strong> <span>₹${fppca2Charge.toFixed(2)}</span></li>
+                    <li><strong>Loss/Gain:</strong> <span>₹${lossGain.toFixed(2)}</span></li>
+                </ul>
+                <div class="total-result">
+                    <h4>Total Bill:</h4>
+                    <span>₹${total.toFixed(2)}</span>
+                </div>
+            `;
+            resultDiv.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>

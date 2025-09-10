@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoltCharge - Next-Gen Electricity Billing</title>
+    <!-- Font and Icon links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-color: #e6e6e6;
+            --primary-color: #9ca7f4;
+            --secondary-color: #ff1493;
+            --border-color: #30363d;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* The video is the base layer */
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -2;
+            opacity: 0.3;
+        }
+
+        /* The transparent overlay sits on top of the video */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(13, 17, 23, 0.7);
+            z-index: -1;
+        }
+
+        /* Content wrapper for the main layout */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-header {
+            background-color: transparent;
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            
+            text-decoration: none;
+        
+        }
+
+        .logo svg {
+            height: 40px;
+            width: auto;
+            
+            fill: var(--text-color);
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-left: 10px;
+            letter-spacing: -1px;
+        }
+
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .main-nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .main-nav a:hover, .main-nav a.active {
+            color: var(--primary-color);
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .main-nav a:hover::after, .main-nav a.active::after {
+            width: 100%;
+        }
+
+        /* Main content area, including sidebar */
+        .page-layout {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        .sticky-sidebar {
+            width: 250px;
+            flex-shrink: 0;
+            padding: 2rem;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            align-self: flex-start;
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .sticky-sidebar a, .dropdown-btn {
+            padding: 0.8rem 1rem;
+            text-decoration: none;
+            font-size: 1rem;
+            color: var(--text-color);
+            display: block;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+        }
+        
+        .sticky-sidebar a:hover, .dropdown-btn:hover {
+            background-color: var(--border-color);
+            color: var(--primary-color);
+        }
+        
+        .dropdown-container {
+            display: none;
+            background-color: rgba(0,0,0,0.1);
+            border-radius: 8px;
+            margin-top: -0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dropdown-container a {
+            padding-left: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .dropdown-btn::after {
+            content: '\25BC';
+            font-size: 0.8rem;
+            color: var(--text-color);
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-btn.active::after {
+            transform: translateY(-50%) rotate(180deg);
+            color: var(--primary-color);
+        }
+
+        .page-content {
+            flex-grow: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-section {
+            padding: 5rem 0;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--bg-color);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(179, 159, 250, 0.6);
+        }
+
+        .data-panels-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            margin-top: 3rem;
+        }
+
+        .panel {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            box-shadow: var(--box-shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .panel a {
+            text-decoration: none;
+        }
+
+        .panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+
+        .counter {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .main-footer {
+            background-color: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .footer-logo-section svg {
+            height: 50px;
+            fill: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo-section p {
+            font-size: 0.8rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .footer-links-section ul {
+            list-style: none;
+        }
+
+        .footer-links-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links-section a, .footer-social-section a {
+            color: var(--text-color);
+            opacity: 0.8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links-section a:hover, .footer-social-section a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-social-section h4 {
+            margin-bottom: 1rem;
+        }
+
+        .contact-form {
+            text-align: left;
+        }
+        
+        .contact-form input,
+        .contact-form textarea {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* New CSS for the scrolling text feature */
+        .scrolling-text {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            width: 100%;
+            background: linear-gradient(90deg, #2f3d95, #766ee6, #ff1493);
+            color: var(--text-color);
+            padding: 0.5rem 0;
+        }
+
+        .scrolling-text span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll-left 20s linear infinite;
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .page-layout {
+                flex-direction: column;
+            }
+            .sticky-sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .main-header {
+                flex-direction: column;
+                padding-bottom: 0;
+            }
+            .main-nav ul {
+                flex-direction: column;
+                gap: 0;
+                width: 100%;
+                margin-top: 1rem;
+            }
+            .main-nav li {
+                width: 100%;
+                text-align: center;
+                border-top: 1px solid var(--border-color);
+                padding: 0.5rem 0;
+            }
+            .main-nav li:first-child {
+                border-top: none;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            .data-panels-section {
+                grid-template-columns: 1fr;
+            }
+            .page-layout {
+              padding-top: 0;
+            }
+        }
+        
+        /* Utility class to hide on mobile */
+        @media (max-width: 992px) {
+            .mobile-hide {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <video autoplay muted loop id="bg-video">
+        <source src="main video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="overlay"></div>
+
+    <div class="content-wrapper">
+        <header class="main-header">
+            <div class="header-content">
+                <a href="#" class="logo">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 14H11V9H13V14ZM16.5 15.5H15V8H16.5V15.5ZM19 3H5C3.89 3 3 3.89 3 5V19C3 20.11 3.89 21 5 21H19C20.11 21 21 20.11 21 19V5C21 3.89 20.11 3 19 3ZM19 19H5V5H19V19Z"/>
+                    </svg>
+                    <span class="logo-text">VoltCharge</span>
+                </a>
+                <nav class="main-nav mobile-hide">
+                    <ul>
+                        <li><a href="#hero-section" class="active">Home</a></li>
+                        <li><a href="dashboard.html">Dashboard</a></li>
+                        <li><a href="contact us.html">Contact Us</a></li>
+                        <li><a href="FAQ.html">FAQ</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        
+        <div class="scrolling-text">
+            <span>Simplified Billing • Real-Time Analytics • 24/7 Support • Save Energy, Save Money! • Your Power, Your Control.</span>
+        </div>
+
+        <div class="page-layout">
+            <!-- Sticky Sidebar Navigation -->
+            <nav class="sticky-sidebar">
+                <button class="dropdown-btn" onclick="toggleDropdown(event)">
+                    <span class="material-icons">payment</span> Payment
+                </button>
+                <div class="dropdown-container">
+                    <a href="view bill.html">View Bill/History</a>
+                    <a href="./customers/payement option.html">Make Payment</a>
+                </div>
+                <a href="support page.html"><span class="material-icons">headset_mic</span> Support</a>
+                <a href="./customers/new connection.html"><span class="material-icons">lightbulb</span> New Connection</a>
+                <a href="calculator.html"><span class="material-icons"></span>claculate bill</a>
+                <a href="disbursement.html"><span class="material-icons"></span> Disbursement</a>
+                <a href="./customers/request.html"><span class="material-icons"></span>Request</a>
+
+            </nav>
+
+            <main class="page-content">
+                <section id="hero-section" class="hero-section">
+                    <h1 class="hero-title">Your Power, Your Control.</h1>
+                    <p class="hero-subtitle">Simplify your electricity billing and track consumption with real-time insights.</p>
+                    <a href="#data-panels" class="btn btn-primary">Explore Analytics</a>
+                </section>
+
+                <section id="data-panels" class="data-panels-section">
+                    <div class="panel">
+                        <span class="material-icons icon">person</span>
+                        <div class="panel-content">
+                            <span class="counter" data-target="8688865">0</span>
+                            <p class="label">Total Customers</p>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <span class="material-icons icon">trending_up</span>
+                        <div class="panel-content">
+                            <span class="counter" data-target="7500">0</span>
+                            <p class="label">kWh in Last Month</p>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <span class="material-icons icon">account_balance_wallet</span>
+                        <div class="panel-content">
+                            <span class="counter" data-target="15">0</span>
+                            <p class="label">Years of Service</p>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <span class="material-icons icon">mail_outline</span>
+                        <div class="panel-content">
+                            <span class="counter" data-target="100">0</span>
+                            <p class="label">send request</p>
+                            <a href="contact us.html" class="btn btn-primary" style="margin-top: 10px;">Contact Us</a>
+                        </div>
+                    </div>
+                </section>
+                
+                <section id="contact-form" class="data-panels-section" style="padding-top: 1rem;">
+                    <div class="panel" style="width: 100%; max-width: 600px;">
+                        <h2 style="font-weight: 600; font-size: 1.5rem; color: var(--text-color);">Contact Us</h2>
+                        <form class="contact-form" style="width: 100%;">
+                            <input type="text" placeholder="Your Name">
+                            <input type="email" placeholder="Your Email">
+                            <textarea placeholder="Your Message" rows="5"></textarea>
+                            <button type="submit" class="btn btn-primary" style="margin: 0;">Send Message</button>
+                        </form>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <footer class="main-footer">
+            <div class="footer-grid">
+                <div class="footer-logo-section">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M13 14H11V9H13V14ZM16.5 15.5H15V8H16.5V15.5ZM19 3H5C3.89 3 3 3.89 3 5V19C3 20.11 3.89 21 5 21H19C20.11 21 21 20.11 21 19V5C21 3.89 20.11 3 19 3ZM19 19H5V5H19V19Z"/>
+                    </svg>
+                    <p style="font-size: 0.8rem; margin-top: 10px;">&copy; 2025 VoltCharge. All rights reserved to keerthana partapu.</p>
+                </div>
+                <div class="footer-links-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#about-us">About Us</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li><a href="#support">Support</a></li>
+                        <li><a href="#contact-form">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social-section">
+                    <h4>Connect</h4>
+                    <div class="social-icons" style="display: flex; gap: 15px;">
+                        <a href="#" aria-label="Twitter">Twitter</a>
+                        <a href="#" aria-label="Facebook">Facebook</a>
+                        <a href="#" aria-label="Instagram">Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const counters = document.querySelectorAll('.counter');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = +counter.getAttribute('data-target');
+                        const start = 0;
+                        const duration = 2000;
+                        const startTime = performance.now();
+                        
+                        function animate(currentTime) {
+                            const elapsedTime = currentTime - startTime;
+                            const progress = Math.min(elapsedTime / duration, 1);
+                            const value = Math.floor(progress * target);
+                            counter.textContent = value.toLocaleString();
+                            
+                            if (progress < 1) {
+                                requestAnimationFrame(animate);
+                            } else {
+                                counter.textContent = target.toLocaleString();
+                            }
+                        }
+                        requestAnimationFrame(animate);
+                        observer.unobserve(counter);
+                    }
+                });
+            }, {
+                threshold: 0.5
+            });
+
+            counters.forEach(counter => {
+                observer.observe(counter);
+            });
+        });
+
+        function toggleDropdown(event) {
+            const dropdownBtn = event.currentTarget;
+            dropdownBtn.classList.toggle("active");
+            const dropdownContainer = dropdownBtn.nextElementSibling;
+            
+            if (dropdownContainer.style.display === "block") {
+                dropdownContainer.style.display = "none";
+            } else {
+                dropdownContainer.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
